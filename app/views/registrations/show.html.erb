@@ -1,4 +1,1 @@
-<div>
-  <h1 class="font-bold text-4xl">Registrations#show</h1>
-  <p>Find me in app/views/registrations/show.html.erb</p>
-</div>
+<%= redirect_to step_registration_path(@registration, step: @registration.current_step) %>

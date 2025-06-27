@@ -1,5 +1,51 @@
-<h1>Registration#document_preview</h1>
-
-<p>
-  <%= @greeting %>, find me in app/views/registration_mailer/document_preview.html.erb
-</p>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: #4F46E5; color: white; padding: 20px; text-align: center; }
+    .content { padding: 20px; background: #f8f9fa; }
+    .button { display: inline-block; padding: 12px 24px; background: #22C55E; color: white; text-decoration: none; border-radius: 6px; margin: 10px 5px; }
+    .button.decline { background: #EF4444; }
+    .document-preview { background: white; padding: 15px; border: 1px solid #ddd; margin: 15px 0; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📄 Review Your Business Registration Documents</h1>
+    </div>
+    
+    <div class="content">
+      <h2>Hi <%= @user.first_name %>,</h2>
+      
+      <p>Your incorporation documents for <strong><%= @registration.business_name %></strong> are ready for review!</p>
+      
+      <div class="document-preview">
+        <h3>Document Preview:</h3>
+        <pre><%= truncate(@document.generated_content, length: 500) %></pre>
+        <p><em>...and more</em></p>
+      </div>
+      
+      <p><strong>Registration Details:</strong></p>
+      <ul>
+        <li>Business Name: <%= @registration.business_name %></li>
+        <li>Business Type: <%= @registration.business_category.name %></li>
+        <li>State: <%= @registration.state.name %></li>
+        <li>Total Cost: <%= @registration.formatted_fees %></li>
+      </ul>
+      
+      <p>Please review the document carefully. If everything looks correct, click "Approve" to proceed with e-signature and payment. If you need changes, click "Request Changes".</p>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="<%= @approval_url %>" class="button">✅ Approve Document</a>
+        <a href="<%= @decline_url %>" class="button decline">❌ Request Changes</a>
+      </div>
+      
+      <p><small>This approval link expires in 7 days. If you have questions, contact our support team.</small></p>
+    </div>
+  </div>
+</body>
+</html>

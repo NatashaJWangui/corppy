@@ -1,5 +1,43 @@
-<h1>Compliance#document_approved</h1>
-
-<p>
-  <%= @greeting %>, find me in app/views/compliance_mailer/document_approved.html.erb
-</p>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: #22C55E; color: white; padding: 20px; text-align: center; }
+    .content { padding: 20px; background: #f8f9fa; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎉 Your Business is Officially Registered!</h1>
+    </div>
+    
+    <div class="content">
+      <h2>Congratulations <%= @user.first_name %>!</h2>
+      
+      <p><strong><%= @registration.business_name %></strong> has been successfully registered in <%= @registration.state.name %>!</p>
+      
+      <p>Your official incorporation documents are attached to this email. Please keep them in a safe place as you'll need them for:</p>
+      <ul>
+        <li>Opening business bank accounts</li>
+        <li>Applying for business licenses</li>
+        <li>Tax filings</li>
+        <li>Insurance applications</li>
+      </ul>
+      
+      <p><strong>Next Steps:</strong></p>
+      <ul>
+        <li>Obtain an EIN (Employer Identification Number) from the IRS</li>
+        <li>Open a business bank account</li>
+        <li>Apply for any required business licenses</li>
+        <li>Set up business accounting</li>
+      </ul>
+      
+      <p>Thank you for choosing Corppy! If you need any additional services, feel free to reach out.</p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,4 +1,64 @@
-<div>
-  <h1 class="font-bold text-4xl">Admin::Dashboard#index</h1>
-  <p>Find me in app/views/admin/dashboard/index.html.erb</p>
+<div class="min-h-screen bg-gray-50">
+  <nav class="bg-white border-b">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex justify-between h-16">
+        <div class="flex items-center">
+          <h1 class="text-xl font-semibold">Admin Dashboard</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+          <span>Welcome, <%= current_user.full_name %></span>
+          <%= link_to "Logout", logout_path, method: :delete, class: "text-gray-500 hover:text-gray-700" %>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto py-8 px-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-medium text-gray-900">Total Registrations</h3>
+        <p class="text-3xl font-bold text-indigo-600"><%= BusinessRegistration.count %></p>
+      </div>
+      
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-medium text-gray-900">Pending Reviews</h3>
+        <p class="text-3xl font-bold text-yellow-600"><%= ComplianceReview.pending.count %></p>
+      </div>
+      
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-medium text-gray-900">Completed Today</h3>
+        <p class="text-3xl font-bold text-green-600"><%= BusinessRegistration.where(status: :completed, updated_at: Date.current.all_day).count %></p>
+      </div>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="bg-white rounded-lg shadow">
+        <div class="p-6 border-b">
+          <h3 class="text-lg font-medium">Quick Actions</h3>
+        </div>
+        <div class="p-6 space-y-3">
+          <%= link_to "Manage Registrations", admin_business_registrations_path, class: "block w-full text-left px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded" %>
+          <%= link_to "Manage Users", admin_users_path, class: "block w-full text-left px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded" %>
+          <%= link_to "Document Templates", admin_document_templates_path, class: "block w-full text-left px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded" %>
+        </div>
+      </div>
+      
+      <div class="bg-white rounded-lg shadow">
+        <div class="p-6 border-b">
+          <h3 class="text-lg font-medium">Recent Activity</h3>
+        </div>
+        <div class="p-6">
+          <% BusinessRegistration.recent.limit(5).each do |registration| %>
+            <div class="flex justify-between items-center py-2 border-b last:border-b-0">
+              <div>
+                <p class="font-medium"><%= registration.business_name %></p>
+                <p class="text-sm text-gray-600"><%= registration.status.humanize %></p>
+              </div>
+              <span class="text-sm text-gray-500"><%= time_ago_in_words(registration.created_at) %> ago</span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,4 +1,100 @@
-<div>
-  <h1 class="font-bold text-4xl">ComplianceOfficer::Reviews#index</h1>
-  <p>Find me in app/views/compliance_officer/reviews/index.html.erb</p>
+<div class="min-h-screen bg-gray-50">
+  <nav class="bg-white border-b">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex justify-between h-16">
+        <div class="flex items-center space-x-4">
+          <%= link_to compliance_officer_path, class: "text-gray-600 hover:text-gray-900" do %>
+            ← Dashboard
+          <% end %>
+          <h1 class="text-xl font-semibold">Document Reviews</h1>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto py-8 px-4">
+    <div class="mb-6">
+      <div class="border-b border-gray-200">
+        <nav class="-mb-px flex space-x-8">
+          <a href="#" class="border-indigo-500 text-indigo-600 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+            Pending (<%= @pending_reviews.count %>)
+          </a>
+          <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+            Completed (<%= @completed_reviews.count %>)
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Pending Reviews -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-md mb-8">
+      <ul class="divide-y divide-gray-200">
+        <% @pending_reviews.each do |review| %>
+          <% registration = review.document.business_registration %>
+          <li>
+            <div class="px-4 py-4 flex items-center justify-between">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div class="h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                    <span class="text-yellow-600 font-medium text-sm">📋</span>
+                  </div>
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">
+                    <%= registration.business_name %>
+                  </div>
+                  <div class="text-sm text-gray-500">
+                    <%= registration.business_category.name %> • <%= registration.state.name %> • Submitted <%= time_ago_in_words(registration.created_at) %> ago
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <%= link_to "Review Document", compliance_officer_review_path(review),
+                      class: "bg-indigo-600 text-white px-3 py-1 rounded text-sm hover:bg-indigo-700" %>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+      
+      <% if @pending_reviews.empty? %>
+        <div class="text-center py-8">
+          <p class="text-gray-500">No pending reviews</p>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Recent Completed Reviews -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+      <div class="px-4 py-3 border-b border-gray-200">
+        <h3 class="text-lg font-medium text-gray-900">Recently Completed</h3>
+      </div>
+      <ul class="divide-y divide-gray-200">
+        <% @completed_reviews.each do |review| %>
+          <% registration = review.document.business_registration %>
+          <li>
+            <div class="px-4 py-4 flex items-center justify-between">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div class="h-10 w-10 rounded-full <%= review.approval_decision == 'approved' ? 'bg-green-100' : 'bg-red-100' %> flex items-center justify-center">
+                    <span class="<%= review.approval_decision == 'approved' ? 'text-green-600' : 'text-red-600' %> font-medium text-sm">
+                      <%= review.approval_decision == 'approved' ? '✓' : '✗' %>
+                    </span>
+                  </div>
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">
+                    <%= registration.business_name %>
+                  </div>
+                  <div class="text-sm text-gray-500">
+                    <%= review.approval_decision.humanize %> <%= time_ago_in_words(review.reviewed_at) %> ago
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
 </div>
