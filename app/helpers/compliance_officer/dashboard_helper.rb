@@ -1,0 +1,2 @@
+module ComplianceOfficer::DashboardHelper
+end

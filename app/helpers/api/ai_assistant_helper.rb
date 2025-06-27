@@ -1,0 +1,2 @@
+module Api::AiAssistantHelper
+end
